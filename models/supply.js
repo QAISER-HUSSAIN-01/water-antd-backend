@@ -8,6 +8,9 @@ const sppplySchema = new Schema({
   bottlesOut: String,
   remainingAmount:String,
   recievedAmount:String
+},
+{
+  timestamps:true
 });
 
 const Supply = mongoose.model('Supply', sppplySchema);

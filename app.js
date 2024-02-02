@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import userRoutes from './routes/users.js';
+import customerRoutes from './routes/customers.js'
 import loginRoute from './routes/login.js';
 import registerRoute from './routes/register.js';
 import supplyRoutes from './routes/supply.js';
@@ -28,6 +29,7 @@ app.use(express.json());
 app.use('/api/login', loginRoute);
 app.use('/api/register', registerRoute);
 app.use('/api/user', userRoutes);
+app.use('/api/customer', customerRoutes);
 app.use('/api/supply', supplyRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 

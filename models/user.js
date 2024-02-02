@@ -20,7 +20,7 @@ const userSchema = new Schema({
   role:{type:String,default:'client',enum:['admin','user','client']}
 },
 {
-  timestamps:true
+  timestamps:true,
 });
 
 const User = mongoose.model('User', userSchema);

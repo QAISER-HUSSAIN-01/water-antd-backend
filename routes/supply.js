@@ -1,22 +1,21 @@
 import express from "express";
 const router = express.Router();
 import verifyToken from "../middleware/protected.js";
-import Supply from "../models/supply.js";
+import Supply from "../models/user.js";
 
-
-const aggregateData = async()=>{
+const aggregateData = async () => {
   const combinedData = await Supply.aggregate([
     {
       $lookup: {
-        from: 'users',
-        localField: 'customerId', // Replace with the actual common field in the Supply model
-        foreignField: '_id', // Replace with the actual common field in the User model
-        as: 'user',
+        from: "users",
+        localField: "customerId", // Replace with the actual common field in the Supply model
+        foreignField: "_id", // Replace with the actual common field in the User model
+        as: "user",
       },
     },
     {
       $unwind: {
-        path: '$user',
+        path: "$user",
         preserveNullAndEmptyArrays: true,
       },
     },
@@ -25,27 +24,27 @@ const aggregateData = async()=>{
         _id: 1, // Exclude _id field if you don't need it
         customerId: 1, // Include fields from the Supply model
         // Add other fields from the Supply model that you want to keep
-        remainingAmount:1,
-        recievedAmount:1,
-        bottlesIn:1,
-        bottlesOut:1,
+        remainingAmount: 1,
+        recievedAmount: 1,
+        bottlesIn: 1,
+        bottlesOut: 1,
         // Include fields from the User model
-        username: '$user.username',
-        phone: '$user.phone',
-        address: '$user.address',
+        username: "$user.username",
+        phone: "$user.phone",
+        address: "$user.address",
         // Add other fields from the User model that you want to merge
       },
     },
   ]);
   return combinedData;
-}
+};
 
 router.get("/", verifyToken, async (req, res) => {
   // This route is protected and only accessible with a valid token.
   // You can access the user data from req.userData.
   try {
-    const data = await aggregateData();
-    res.status(200).json({ data: data });
+    const data = await Supply.find({ role: "client", isActive: true });
+    res.status(200).json({ success: true, data: data });
   } catch (error) {
     res.status(500).json({ error: "Something went wrong" });
   }
@@ -56,7 +55,9 @@ router.get("/:id", verifyToken, async (req, res) => {
   try {
     const { id } = req.params;
     const found = await Supply.findById(id);
-    res.status(200).json({ data: found });
+    res
+      .status(200)
+      .json({ success: true, message: "Updated Successfully", data: found });
   } catch (error) {
     res.status(500).json({ error: "Could not found" });
   }
@@ -65,17 +66,9 @@ router.get("/:id", verifyToken, async (req, res) => {
 router.post("/", verifyToken, async (req, res) => {
   try {
     const userId = req?.userData?.userId;
-    const {customerId,bottlesIn,bottlesOut,remainingAmount,recievedAmount } = req.body;
-    const created = new Supply({
-      userId:userId,
-      customerId:customerId,
-      bottlesIn: bottlesIn,
-      bottlesOut: bottlesOut,
-      remainingAmount: remainingAmount,
-      recievedAmount: recievedAmount,
-    });
+    const created = new Supply(req.body);
     await created.save();
-    const data = await aggregateData();
+    const data = await Supply.find({ role: "client", isActive: true });
 
     res.status(201).json({ message: "Registered Successfully", data: data });
   } catch (error) {
@@ -88,9 +81,7 @@ router.put("/:id", verifyToken, async (req, res) => {
   try {
     const { id } = req.params;
     await Supply.findByIdAndUpdate(id, req.body, { new: true });
-    // const users = await Supply.find();
-    const data = await aggregateData();
-    
+    const data = await Supply.find({ role: "client", isActive: true });
     res.status(200).json({ message: "Updated Successfully", data: data });
   } catch (error) {
     console.error(error);

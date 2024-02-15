@@ -6,7 +6,7 @@ const sppplySchema = new Schema({
   customerId:mongoose.Schema.Types.ObjectId,
   bottlesIn: String,
   bottlesOut: String,
-  remainingAmount:String,
+  remainingAmount:String, 
   recievedAmount:String
 },
 {

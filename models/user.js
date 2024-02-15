@@ -1,7 +1,14 @@
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
+const recordSchema = new Schema({
+  month: String,
+  date: String,
+  qty:String
+  // Add more properties as needed
+});
 const userSchema = new Schema({
+  records:[recordSchema],
   username: String,
   password: String,
   email: String,

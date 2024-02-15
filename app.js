@@ -19,7 +19,7 @@ dotenv.config();
 
 // Middleware
 app.use(cors({
-  origin: ['https://lovely-sorbet-4283f7.netlify.app','http://localhost:3001','http://localhost:3000','http://localhost:8000'],
+  origin: ['https://lovely-sorbet-4283f7.netlify.app','http://localhost:3001','http://localhost:3002','http://localhost:3000','http://localhost:8000'],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
 }));

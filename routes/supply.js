@@ -82,7 +82,7 @@ router.put("/:id", verifyToken, async (req, res) => {
     const { id } = req.params;
     await Supply.findByIdAndUpdate(id, req.body, { new: true });
     const data = await Supply.find({ role: "client", isActive: true });
-    res.status(200).json({ message: "Updated Successfully", data: data });
+    res.status(200).json({success:true, message: "Updated Successfully", data: data });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Updation Failed" });

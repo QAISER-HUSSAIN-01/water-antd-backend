@@ -19,8 +19,8 @@ router.get("/", async (req, res) => {
     let totalRemainingAmount = 0;
 
     clients.forEach((client) => {
-      totalReceivedAmount += parseInt(client.bottlesRecievedAmount) || 0;
-      totalRemainingAmount += parseInt(client.remainingAmount) || 0;
+      totalReceivedAmount += parseInt(client.recievedAmount) + parseInt(client.bottlesRecievedAmount) || 0;
+      totalRemainingAmount += parseInt(client.remainingAmount) + parseInt(client.bottlesRemainingAmount) || 0;
     });
     const data = {totalClients,totalUsers,totalReceivedAmount,totalRemainingAmount};
     res.status(200).json({ success: true, data: data });

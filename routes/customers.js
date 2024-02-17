@@ -30,6 +30,8 @@ router.post("/", verifyToken, async (req, res) => {
     const created = new User({
       createdBy,
       ...req.body,
+      // remainingAmount:req?.body?.bottlesRemainingAmount,
+      // recievedAmount:req?.body?.bottlesRecievedAmount
     });
     await created.save();
     const users = await User.find({ role: "client" }).select("-password");

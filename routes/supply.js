@@ -67,8 +67,8 @@ router.post("/", verifyToken, async (req, res) => {
   try {
     const userId = req?.userData?.userId;
     const created = new Supply(req.body);
-    await created.save();
-    const data = await Supply.find({ role: "client", isActive: true });
+    // await created.save();
+    // const data = await Supply.find({ role: "client", isActive: true });
 
     res.status(201).json({ message: "Registered Successfully", data: data });
   } catch (error) {

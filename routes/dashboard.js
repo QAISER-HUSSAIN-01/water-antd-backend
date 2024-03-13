@@ -19,10 +19,15 @@ router.get("/", async (req, res) => {
     let totalRemainingAmount = 0;
 
     clients.forEach((client) => {
-      totalReceivedAmount += parseInt(client.recievedAmount) + parseInt(client.bottlesRecievedAmount) || 0;
-      totalRemainingAmount += parseInt(client.remainingAmount) + parseInt(client.bottlesRemainingAmount) || 0;
+      // totalReceivedAmount += parseInt(client.recievedAmount) + parseInt(client.bottlesRecievedAmount) || 0;
+      // totalRemainingAmount += parseInt(client.remainingAmount) + parseInt(client.bottlesRemainingAmount) || 0;
+      totalReceivedAmount += parseInt(client.recievedAmount) || 0;
+      totalRemainingAmount += parseInt(client.remainingAmount) || 0;
     });
-    const data = {totalClients,totalUsers,totalReceivedAmount,totalRemainingAmount};
+
+    let users = []
+    
+    const data = {totalClients,totalUsers,totalReceivedAmount,totalRemainingAmount, clients};
     res.status(200).json({ success: true, data: data });
   } catch (error) {
     res.status(500).json({ error: "Something went wrong" });
